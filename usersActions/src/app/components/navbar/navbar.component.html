@@ -1,1 +1,18 @@
-<p>navbar works!</p>
+<div class="w100" fxLayoutAlign="center center">
+
+    <div class="navbar-container" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div class="navbar-container_logo" fxFlex="8" fxLayoutAlign="center center">
+            <img src="../../../assets/img/github.png" alt="">
+        </div>
+
+        <div fxFlex="18" class="navbar-container_router" fxLayout="row" fxLayoutAlign="space-around center">
+            <a mat-flat-button [routerLink]="['/users']" routerLinkActive="activeLink">
+                Users
+            </a>
+            <a mat-flat-button [routerLink]="['/favorites']" routerLinkActive="activeLink">
+                Favorites
+            </a>
+        </div>
+    </div>
+</div>
