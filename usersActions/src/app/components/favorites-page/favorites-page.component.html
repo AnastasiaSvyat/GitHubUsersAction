@@ -1,1 +1,33 @@
-<p>favorites-page works!</p>
+<div fxLayout="column" fxLayoutAlign="space-evenly center" *ngIf="favoriteUsersList.length else emptyList">
+    <mat-list *ngFor="let user of favoriteUsersList; let i = index">
+        <mat-list-item fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex='40%'>
+                <span>
+                    <strong>LOGIN:</strong>
+                    <a [routerLink]='["/repositories", user.login]'>{{ user?.login }}</a>
+                </span>
+                <br>
+                <span>
+                    <strong>URL:</strong>
+                    {{user.url}}
+                </span>
+            </div>
+
+            <div fxFlex='40%' fxLayoutAlign="space-around center">
+                <span *ngIf="user.comment">
+                    <strong>Comment:</strong>
+                    {{user.comment}}
+                </span>
+            </div>
+
+            <div fxFlex='20%' fxLayoutAlign="space-around center">
+                <button mat-stroked-button color="primary" (click)="createComment(i)">Comment</button>
+                <button mat-stroked-button color="warn" (click)="deleteUser(i)">Delete</button>
+            </div>
+        </mat-list-item>
+    </mat-list>
+</div>
+
+<ng-template #emptyList class="w100">
+    No favorite users yet...
+</ng-template>

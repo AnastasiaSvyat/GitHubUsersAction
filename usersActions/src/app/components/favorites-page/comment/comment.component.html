@@ -1,0 +1,30 @@
+<div class="comment-container" fxLayout="column">
+
+    <div class="w100" fxLayoutAlign="end start">
+        <mat-icon fxFlex='10%' (click)="close()">close</mat-icon>
+    </div>
+
+    <h2 class="mt24" mat-dialog-title>Create comment</h2>
+
+    <form fxLayout="column" [formGroup]="commentForm" fxLayoutAlign="center center">
+        <mat-form-field appearance="outline" floatLabel="always">
+            <textarea class="w100" rows="5" placeholder="Enter comment..." formControlName="comment" matInput>
+            </textarea>
+            <mat-error class="helper-text red-text">
+                <span *ngIf="comment?.errors?.['minlength']">
+                    Comment at least 10 characters.
+                </span>
+                <span *ngIf="comment?.errors?.['maxlength']">
+                    Comment no more than 100 characters.
+                </span>
+                <span *ngIf="comment?.errors?.['required']">
+                    Can't create an empty comment
+                </span>
+            </mat-error>
+        </mat-form-field>
+        <button mat-stroked-button [disabled]="commentForm.invalid" color="primary"
+            (click)="create(commentForm.value.comment)">
+            Comment
+        </button>
+    </form>
+</div>

@@ -1,0 +1,22 @@
+.cards-container,
+mat-paginator,
+mat-icon {
+
+    background-color: transparent;
+    margin-top: 40px;
+
+    .card {
+        margin-left: 20px;
+        margin-top: 5px;
+        width: 250px;
+        height: 200px;
+        margin-top: 30px;
+
+        mat-card-title {
+            width: 230px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}

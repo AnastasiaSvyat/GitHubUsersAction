@@ -14,6 +14,8 @@ import { RepositoriesPageComponent } from './components/repositories-page/reposi
 import { FavoritesPageComponent } from './components/favorites-page/favorites-page.component';
 import { MaterialModule } from './material/material.module';
 import { SearchComponent } from './components/users-page/search/search.component';
+import { CommentComponent } from './components/favorites-page/comment/comment.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { SearchComponent } from './components/users-page/search/search.component
     RepositoriesPageComponent,
     FavoritesPageComponent,
     UserDetailsComponent,
-    SearchComponent
+    SearchComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,10 @@ import { SearchComponent } from './components/users-page/search/search.component
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

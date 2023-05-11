@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, tap } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { debounceTime, distinctUntilChanged, fromEvent, map, switchMap, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

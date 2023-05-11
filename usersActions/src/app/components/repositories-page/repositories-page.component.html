@@ -1,1 +1,18 @@
-<p>repositories-page works!</p>
+<div fxLayout="row wrap" class="cards-container" fxLayoutAlign="space-evenly center">
+    <mat-icon *ngIf="loading$ | async" fxLayoutAlign="center center">
+        <mat-spinner diameter="40"></mat-spinner>
+    </mat-icon>
+    <mat-card class="card" *ngFor="let card of repositories | async">
+        <mat-card-header class="w100">
+            <mat-card-title class="w100">
+                {{card.name}}
+            </mat-card-title>
+            <mat-card-subtitle>Stars: {{card.stargazers_count}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Created: {{card.created_at | date:'dd.MM.YYYY'}}</p>
+            <p>Updated: {{card.updated_at | date:'dd.MM.YYYY'}}</p>
+        </mat-card-content>
+    </mat-card>
+</div>
+<mat-paginator [pageSizeOptions]="[9, 25, 100]"></mat-paginator>

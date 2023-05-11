@@ -1,20 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/shared/models/user';
+import { MatDialog } from '@angular/material/dialog';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { FavoriteUser } from 'src/app/shared/models/favoriteUser';
 
 @Component({
   selector: 'app-users-page',
   templateUrl: './users-page.component.html',
   styleUrls: ['./users-page.component.scss']
 })
-export class UsersPageComponent implements OnInit {
+export class UsersPageComponent implements OnInit, OnDestroy {
 
-  @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   public loading$: Observable<boolean>;
@@ -22,41 +23,74 @@ export class UsersPageComponent implements OnInit {
   length = 0;
   pageSize = 0;
   pageIndex = 0;
-  pageSizeOptions = [5, 10, 25];
 
-  hidePageSize = true;
-  showPageSizeOptions = false;
-  showFirstLastButtons = true;
+  favoritesUsersList: FavoriteUser[] = [];
+  private unsubscribe$ = new Subject<void>();
+
+  favoriteLoginList: string[] = []
 
   constructor(
-    private userService: UserService
-  ){
+    private userService: UserService,
+    private dialog: MatDialog
+  ) {
     this.loading$ = this.userService.loading$;
   }
 
   public dataSource: MatTableDataSource<User> = new MatTableDataSource();
 
-
   ngOnInit(): void {
     this.updateFilter();
-    this.userService.githubData$.subscribe(res => {
-      this.length = res.total_count
-      this.dataSource = new MatTableDataSource(res.items)
-      this.dataSource.sort = this.sort;
-    })
+    this.getUsersData(0);
+    this.getFavoritesList();
+    this.getGitHubData();
   }
 
-  updateFilter(){
-    this.userService.searchInput$.subscribe(res => this.pageIndex = 0)
+  getGitHubData() {
+    this.userService.githubData$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(res => {
+        this.length = res.total_count
+        this.dataSource = new MatTableDataSource(res.items)
+      })
   }
 
-  getPaginatorData(data: PageEvent){
-    this.userService.getUsers(data.pageIndex).subscribe()
+  updateFilter() {
+    this.userService.searchInput$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(res => this.pageIndex = 0)
   }
 
-  openDetails(row: User){
-    console.log(row);
-    
+  getUsersData(pageIndex: number) {
+    this.userService.getUsers(pageIndex)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe()
+  }
+
+  openDetails(user: User) {
+    const dialogRef = this.dialog.open(UserDetailsComponent, {
+      width: '760px',
+      height: '550px',
+      data: { avatarUrl: user.avatar_url }
+    });
+  }
+
+  getFavoritesList() {
+    this.favoritesUsersList = this.userService.getFavoritesList().favoritesList || [];
+
+    this.favoritesUsersList.forEach(element => {
+      this.favoriteLoginList.push(element.login)
+    });
+  }
+
+  addToFavorite(user: User) {
+    this.favoritesUsersList.push({ login: user.login, url: user.url })
+    this.favoriteLoginList.push(user.login)
+    this.userService.setFavoritesUsersList(this.favoritesUsersList)
+  }
+
+  public ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

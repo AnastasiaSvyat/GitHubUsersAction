@@ -1,11 +1,13 @@
-
-.table-container{
+.table-container {
     width: 80%;
-    mat-table, mat-paginator{
+
+    mat-table,
+    mat-paginator {
         background-color: transparent;
     }
 }
-mat-row{
+
+mat-row {
     box-shadow: 0px 0px 20px rgba(26, 35, 126, 0.15);
     margin-top: 8px;
     background-color: #ffffff;
@@ -14,12 +16,13 @@ mat-row{
     cursor: pointer;
 }
 
-mat-cell{
+mat-cell {
     height: 48px;
     font-weight: 400;
 }
 
-mat-header-cell,mat-cell{
+mat-header-cell,
+mat-cell {
     font-family: 'Open Sans';
     color: #53384e;
     font-size: 14px;
@@ -29,6 +32,6 @@ mat-header-cell,mat-cell{
 
 @media screen and (max-width: 600px) {
     .displayNoneTel {
-        display: none;    
+        display: none;
     }
 }

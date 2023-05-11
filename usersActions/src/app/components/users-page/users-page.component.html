@@ -8,66 +8,62 @@
 
     <mat-icon *ngIf="loading$ | async">
         <mat-spinner diameter="20"></mat-spinner>
-      </mat-icon>
+    </mat-icon>
 
     <div class="table-container" *ngIf="length else emptyList">
 
-        <mat-table mat-table [dataSource]="dataSource" matSort>
+        <mat-table mat-table [dataSource]="dataSource">
 
             <ng-container matColumnDef="login">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex='45%' fxFlex.gt-xs="28%">
+                <mat-header-cell *matHeaderCellDef fxFlex='40%' fxFlex.gt-xs="25%">
                     Login
                 </mat-header-cell>
-                <mat-cell *matCellDef="let user" fxFlex='45%' fxFlex.gt-xs="28%">
-                    <span class="w90">
-
-                        <a [href]="user?.html_url + '?tab=repositories'" target="_blank">{{ user?.login }}</a>
-
-                    </span>
+                <mat-cell *matCellDef="let user" fxFlex='40%' fxFlex.gt-xs="25%">
+                    <a [routerLink]='["/repositories", user.login]'>{{ user?.login }}</a>
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="id">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="45%" fxFlex.gt-xs="27%">
+                <mat-header-cell *matHeaderCellDef fxFlex="40%" fxFlex.gt-xs="27%">
                     Id
                 </mat-header-cell>
-                <mat-cell *matCellDef="let user" fxFlex="45%" fxFlex.gt-xs="27%">
-                    <span class="w90">
-                        {{ user?.id }}
-                    </span>
+                <mat-cell (click)="openDetails(user)" *matCellDef="let user" fxFlex="40%" fxFlex.gt-xs="27%">
+                    {{ user?.id }}
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="url" class="displayNoneTel">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="30%" class="displayNoneTel">
+                <mat-header-cell *matHeaderCellDef fxFlex="25%" class="displayNoneTel">
                     Url
                 </mat-header-cell>
-                <mat-cell class="displayNoneTel" *matCellDef="let user" fxFlex="30%">
-                    <span class="w90">
-                        {{ user?.url || '&#8212;' }}
-                    </span>
+                <mat-cell (click)="openDetails(user)" class="displayNoneTel" *matCellDef="let user" fxFlex="30%">
+                    {{ user?.url || '&#8212;' }}
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="type">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%">
+            <ng-container matColumnDef="type" class="displayNoneTel">
+                <mat-header-cell *matHeaderCellDef fxFlex="5%" class="displayNoneTel">
                     Type
                 </mat-header-cell>
-                <mat-cell *matCellDef="let user" fxFlex="10%">
-                    <span class="w90">
-                        {{ user?.type }}
-                    </span>
+                <mat-cell (click)="openDetails(user)" class="displayNoneTel" *matCellDef="let user" fxFlex="5%">
+                    {{ user?.type }}
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="score" class="displayNoneTel">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" class="displayNoneTel">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" class="displayNoneTel">
                     Score
                 </mat-header-cell>
-                <mat-cell class="displayNoneTel" *matCellDef="let user" fxFlex="10%">
-                    <span class="w90">
-                        {{ user?.score || '&#8212;' }}
-                    </span>
+                <mat-cell (click)="openDetails(user)" class="displayNoneTel" *matCellDef="let user" fxFlex="5%">
+                    {{ user?.score || '&#8212;' }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="favorite">
+                <mat-cell *matCellDef="let user" fxFlex="20" fxFlex.gt-xs="13%">
+                    <button *ngIf="!(favoriteLoginList.includes(user.login)) else favoriteUser"
+                        (click)="addToFavorite(user)" mat-stroked-button color="primary">Favorite</button>
+                    <ng-template #favoriteUser>Favorite User</ng-template>
                 </mat-cell>
             </ng-container>
 
@@ -79,15 +75,13 @@
                     'score',
                 ]">
             </mat-header-row>
-            <mat-row (click)="openDetails(row)" class="cursor" *matRowDef="
+            <mat-row class="cursor" *matRowDef="
                     let row;
-                    columns: ['login', 'id', 'url',  'type', 'score',]
+                    columns: ['login', 'id', 'url',  'type', 'score', 'favorite']
                 ">
             </mat-row>
         </mat-table>
-        <mat-paginator #paginator (page)="getPaginatorData($event)" [length]="length"
-            [showFirstLastButtons]="showFirstLastButtons" [pageSizeOptions]="pageSizeOptions"
-            [hidePageSize]="hidePageSize" [pageIndex]="pageIndex">
+        <mat-paginator #paginator (page)="getUsersData($event.pageIndex)" [length]="length" [pageIndex]="pageIndex">
         </mat-paginator>
     </div>
 </div>
