@@ -1,0 +1,34 @@
+
+.table-container{
+    width: 80%;
+    mat-table, mat-paginator{
+        background-color: transparent;
+    }
+}
+mat-row{
+    box-shadow: 0px 0px 20px rgba(26, 35, 126, 0.15);
+    margin-top: 8px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border-top: none;
+    cursor: pointer;
+}
+
+mat-cell{
+    height: 48px;
+    font-weight: 400;
+}
+
+mat-header-cell,mat-cell{
+    font-family: 'Open Sans';
+    color: #53384e;
+    font-size: 14px;
+    line-height: 19.07px;
+}
+
+
+@media screen and (max-width: 600px) {
+    .displayNoneTel {
+        display: none;    
+    }
+}

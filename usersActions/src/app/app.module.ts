@@ -13,6 +13,7 @@ import { UsersPageComponent } from './components/users-page/users-page.component
 import { RepositoriesPageComponent } from './components/repositories-page/repositories-page.component';
 import { FavoritesPageComponent } from './components/favorites-page/favorites-page.component';
 import { MaterialModule } from './material/material.module';
+import { SearchComponent } from './components/users-page/search/search.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MaterialModule } from './material/material.module';
     UsersPageComponent,
     RepositoriesPageComponent,
     FavoritesPageComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
